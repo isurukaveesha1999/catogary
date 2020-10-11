@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import java.util.List;
+
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
     private Context mContext;
     private List<Upload> mUploads;
     private OnItemClickListener mListener;
+
     public ImageAdapter(Context context, List<Upload> uploads) {
         mContext = context;
         mUploads = uploads;
@@ -68,6 +70,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             menu.setHeaderTitle("Select Action");
             MenuItem doWhatever = menu.add(Menu.NONE, 1, 1, "Do whatever");
             MenuItem delete = menu.add(Menu.NONE, 2, 2, "Delete");
+
             doWhatever.setOnMenuItemClickListener(this);
             delete.setOnMenuItemClickListener(this);
         }
@@ -95,6 +98,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         void onDeleteClick(int position);
     }
     public void setOnItemClickListener(OnItemClickListener listener) {
+
         mListener = listener;
     }
 }

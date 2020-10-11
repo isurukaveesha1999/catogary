@@ -1,7 +1,6 @@
 package com.example.catergory;
 
 import androidx.annotation.NonNull;
-
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,28 +30,36 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
+
     private Button mButtonChooseImage;
     private Button mButtonUpload;
     private TextView mTextViewShowUploads;
     private EditText mEditTextFileName;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
+
     private Uri mImageUri;
+
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
     private StorageTask mUploadTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mButtonChooseImage = findViewById(R.id.button_choose_image);
         mButtonUpload = findViewById(R.id.button_upload);
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
         mEditTextFileName = findViewById(R.id.edit_text_file_name);
         mImageView = findViewById(R.id.image_view);
         mProgressBar = findViewById(R.id.progress_bar);
-        mStorageRef = FirebaseStorage.getInstance().getReference("catergory");
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("catergory");
+
+
+        mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
+
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         if (mImageUri != null) {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
+
             mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -112,10 +118,11 @@ public class MainActivity extends AppCompatActivity {
                                 public void run() {
                                     mProgressBar.setProgress(0);
                                 }
-                            }, 500);
+                            }, 5000);
+
                             Toast.makeText(MainActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
                             Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),
-                                    taskSnapshot.getDownload.toString());
+                                    taskSnapshot.getDownloadUrl(".jpg").toString());
                             String uploadId = mDatabaseRef.push().getKey();
                             mDatabaseRef.child(uploadId).setValue(upload);
                         }
